@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
@@ -14,9 +13,9 @@ const { JWT_SECRET = "dev-secret" } = require("../utils/config");
 const getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id).orFail();
+
     return res.status(200).json({
       name: user.name,
-      avatar: user.avatar,
       email: user.email,
       _id: user._id,
     });
@@ -31,11 +30,12 @@ const getCurrentUser = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const { name, avatar, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     if (!email || !password) {
       return next(new BadRequestError("Email and password are required"));
     }
+
     if (password.length < 8) {
       return next(
         new BadRequestError("Password must be at least 8 characters long")
@@ -43,9 +43,9 @@ const createUser = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.create({
       name,
-      avatar,
       email,
       password: hashedPassword,
     });
@@ -58,9 +58,11 @@ const createUser = async (req, res, next) => {
     if (err.code === 11000) {
       return next(new ConflictError("Email already in use"));
     }
+
     if (err.name === "ValidationError") {
       return next(new BadRequestError("Invalid data provided"));
     }
+
     return next(err);
   }
 };
@@ -76,23 +78,26 @@ const login = async (req, res, next) => {
     const user = await User.findUserByCredentials(email, password);
 
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+
     return res.status(200).json({ token });
   } catch (err) {
     console.error("Login error:", err.message);
+
     if (err.message === "Incorrect email or password") {
       return next(new UnauthorizedError("Incorrect email or password"));
     }
+
     return next(err);
   }
 };
 
 const updateUser = async (req, res, next) => {
   try {
-    const { name, avatar } = req.body;
+    const { name } = req.body;
 
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { name, avatar },
+      { name },
       { new: true, runValidators: true }
     );
 
@@ -105,6 +110,7 @@ const updateUser = async (req, res, next) => {
     if (err.name === "ValidationError") {
       return next(new BadRequestError("Invalid data provided"));
     }
+
     return next(err);
   }
 };

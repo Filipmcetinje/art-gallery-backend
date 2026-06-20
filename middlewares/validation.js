@@ -43,12 +43,6 @@ const validateSignup = celebrate({
       "string.max": 'The maximum length of the "name" field is 30',
     }),
 
-    avatar: Joi.string().required().custom(validateURL).messages({
-      "string.empty": 'The "avatar" field must be filled in',
-      "string.uri": 'The "avatar" field must be a valid URL',
-      "any.required": 'The "avatar" field is required',
-    }),
-
     email: Joi.string().email().required().messages({
       "string.email": 'The "email" field must be a valid email address',
       "any.required": 'The "email" field is required',
@@ -101,11 +95,6 @@ const validateUserUpdate = celebrate({
       "string.max": 'The maximum length of the "name" field is 30',
       "string.empty": 'The "name" field must be filled in',
       "any.required": 'The "name" field is required',
-    }),
-    avatar: Joi.string().required().custom(validateURL).messages({
-      "string.empty": 'The "avatar" field must be filled in',
-      "string.uri": 'The "avatar" field must be a valid URL',
-      "any.required": 'The "avatar" field is required',
     }),
   }),
 });
