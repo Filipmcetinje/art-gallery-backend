@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const clothingItemSchema = new mongoose.Schema({
+const artworkSchema = new mongoose.Schema({
   objectID: {
     type: Number,
     required: true,
@@ -39,6 +39,6 @@ const clothingItemSchema = new mongoose.Schema({
   },
 });
 
-const ClothingItem = mongoose.model("ClothingItem", clothingItemSchema);
+const Artwork = mongoose.model("Artwork", artworkSchema);
 
-module.exports = ClothingItem;
+module.exports = Artwork;

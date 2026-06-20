@@ -6,7 +6,7 @@ const cors = require("cors");
 const { errors } = require("celebrate");
 
 const usersRouter = require("./routes/users");
-const itemsRouter = require("./routes/clothingItems");
+const artworksRouter = require("./routes/artworks");
 const { createUser, login } = require("./controllers/users");
 const { validateSignup, validateLogin } = require("./middlewares/validation");
 const errorHandler = require("./middlewares/error-handler");
@@ -32,7 +32,7 @@ app.post("/signup", validateSignup, createUser);
 app.post("/signin", validateLogin, login);
 
 app.use("/users", usersRouter);
-app.use("/items", itemsRouter);
+app.use("/artworks", artworksRouter);
 
 app.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
