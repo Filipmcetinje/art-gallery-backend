@@ -34,6 +34,13 @@ app.post("/signin", validateLogin, login);
 app.use("/users", usersRouter);
 app.use("/artworks", artworksRouter);
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "Art Gallery Explorer Backend API",
+    status: "Running",
+  });
+});
+
 app.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
