@@ -7,7 +7,7 @@ const ForbiddenError = require("../errors/forbiddenError");
 
 const getItems = async (req, res, next) => {
   try {
-    const items = await Artwork.find({});
+    const items = await Artwork.find({ owner: req.user._id });
     return res.json(items);
   } catch (err) {
     return next(err);

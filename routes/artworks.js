@@ -8,13 +8,9 @@ const {
   validateItemId,
 } = require("../middlewares/validation");
 
-const {
-  getItems,
-  createItem,
-  deleteItem,
-} = require("../controllers/artworks");
+const { getItems, createItem, deleteItem } = require("../controllers/artworks");
 
-router.get("/", getItems);
+router.get("/", auth, getItems);
 
 router.use(auth);
 
